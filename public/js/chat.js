@@ -1,5 +1,10 @@
 let socket = io();
 
+function scrollToBottom() {
+  let messages = document.querySelector('#message-history').lastElementChild;
+  messages.scrollIntoView();
+}
+
 socket.on("connect", function () {
   console.log("Connected to server");
 });
@@ -9,19 +14,28 @@ socket.on("disconnect", function () {
 });
 
 socket.on("newMessage", function (message) {
-  console.log("newMessage", message);
+  const fomattedTime = moment(message.createdAt).format('LT');
+  const template = document.querySelector('#outcoming-message-template').innerHTML;
+  const html = Mustache.render(template, {
+    from: message.from,
+    text: message.text,
+    createdAt: fomattedTime
 
-  let li = document.createElement("li");
-  li.innerText = `${message.from}: ${message.text}`;
-
-  document.querySelector("body").appendChild(li);
+  });
+  const div = document.createElement('div');
+  div.innerHTML = html;
+  document.querySelector('#message-history').appendChild(div);
+  scrollToBottom();
 });
 
 socket.on("newLocationMessage", function (message) {
   console.log("newLocationMessage", message);
 
+  const fomattedTime = moment(message.createdAt).format('LT');
+
   let li = document.createElement("li");
   let a = document.createElement("a");
+  li.innerText = `${message.from} ${fomattedTime}: `;
   a.setAttribute("target", "_blank");
   a.setAttribute("href", message.url);
   a.innerText = "My current location";
