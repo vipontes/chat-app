@@ -12,14 +12,3 @@ describe("Generate Message", () => {
   });
 });
 
-describe("Generate Location Message", () => {
-  it("should generate correct location message object", () => {
-    let from = "VFP",
-      lat = 25,
-      lng = 39,
-      url = `https://www.google.com/maps?q=${lat},${lng}`,
-      message = generateLocationMessage(from, 25, 39);
-    expect(typeof message.createdAt).toBe("number");
-    expect(message).toMatchObject({ from, url });
-  });
-});
