@@ -16,7 +16,7 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-    <link href="/css/styles.css" rel="stylesheet" />
+    <link href="/css/chat.css" rel="stylesheet" />
   </head>
   <body>
     <div class="container">
@@ -62,7 +62,7 @@
         <div class="received_msg">
           <div class="received_withd_msg">
             {{text}}
-            <span class="time_date">{{createdAt}}</span>
+            <span class="time_date">{{from}} | {{createdAt}}</span>
           </div>
         </div>
       </div>
@@ -72,7 +72,7 @@
       <div class="outgoing_msg">
         <div class="sent_msg">
           <p>{{text}}</p>
-          <span class="time_date">{{createdAt}}</span>
+          <span class="time_date">{{from}} | {{createdAt}}</span>
         </div>
       </div>
     </script>
@@ -87,6 +87,8 @@
         </div>
         <div class="chat_ib">
           <h5>{{name}}<span class="chat_date">{{connectedAt}}</span></h5>
+          <p>Test, which is a new approach to have all solutions 
+            astrology under one roof.</p>
         </div>
       </div>
     </script>

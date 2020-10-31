@@ -40,16 +40,29 @@ socket.on('updateUsersList', function (users) {
 
 socket.on("newMessage", function (message) {
   const fomattedTime = moment(message.createdAt).format('LT');
-  const template = document.querySelector('#outcoming-message-template').innerHTML;
-  const html = Mustache.render(template, {
-    from: message.from,
-    text: message.text,
-    createdAt: fomattedTime
 
-  });
-  const div = document.createElement('div');
-  div.innerHTML = html;
-  document.querySelector('#message-history').appendChild(div);
+  if ( message.userId == socket.id) {
+    const template = document.querySelector('#outcoming-message-template').innerHTML;
+    const html = Mustache.render(template, {
+      from: message.from,
+      text: message.text,
+      createdAt: fomattedTime
+    });
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    document.querySelector('#message-history').appendChild(div);
+  } else {
+    const template = document.querySelector('#incoming-message-template').innerHTML;
+    const html = Mustache.render(template, {
+      from: message.from,
+      text: message.text,
+      createdAt: fomattedTime
+    });
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    document.querySelector('#message-history').appendChild(div);
+  }
+
   scrollToBottom();
 });
 
@@ -60,6 +73,7 @@ document.querySelector("#submit-btn").addEventListener("click", function (e) {
     "createMessage",
     {
       text: document.querySelector('input[name="message"]').value,
+      userId: socket.id
     },
     function () {
       document.querySelector('input[name="message"]').value = '';

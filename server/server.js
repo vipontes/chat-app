@@ -33,15 +33,9 @@ io.on("connection", (socket) => {
 
     io.to(params.room).emit('updateUsersList', users.getUserList(params.room));
 
-    socket.emit(
-      "newMessage",
-      generateMessage("Admin", "Welcome to the chat app")
-    );
+    socket.emit("newMessage", generateMessage("Admin", "Welcome to the chat app", 0));
   
-    socket.broadcast.emit(
-      "newMessage",
-      generateMessage("Admin", "New user joined")
-    );
+    socket.broadcast.emit("newMessage", generateMessage("Admin", "New user joined", 0));
 
     callback();
   });
@@ -50,7 +44,7 @@ io.on("connection", (socket) => {
     let user = users.getUser(socket.id);
 
     if (user && isRealString(message.text)) {
-      io.to(user.room).emit("newMessage", generateMessage(user.name, message.text));
+      io.to(user.room).emit("newMessage", generateMessage(user.name, message.text, message.userId));
     }
 
     callback("This is the server");
@@ -60,7 +54,7 @@ io.on("connection", (socket) => {
     let user = users.removeUser(socket.id);
     if (user) {
       io.to(user.room).emit('updateUsersList', users.getUserList(user.room));
-      io.to(user.room).emit('newMessage', generateMessage('Admin', `${user.name} has left ${user.room} chat room.`));
+      io.to(user.room).emit('newMessage', generateMessage('Admin', `${user.name} has left ${user.room} chat room.`, socket.id));
     }
   });
 });
